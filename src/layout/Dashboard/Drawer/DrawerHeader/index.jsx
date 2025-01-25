@@ -14,7 +14,8 @@ export default function DrawerHeader({ open }) {
 
   return (
     <DrawerHeaderStyled theme={theme} open={!!open}>
-      <Logo isIcon={!open} sx={{ width: open ? 'auto' : 35, height: 35 }} />
+      {/* <Logo isIcon={!open} sx={{ width: open ? 'auto' : 35, height: 35 }} /> */}
+      <h1>Explore Ahemdabad</h1>
     </DrawerHeaderStyled>
   );
 }

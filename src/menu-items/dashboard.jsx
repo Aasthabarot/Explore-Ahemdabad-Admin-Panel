@@ -42,7 +42,7 @@ const dashboard = {
       type: 'item',
       url: '/travellers',
       icon: icons.UserOutlined, // Changed to UserOutlined
-      target: true
+      // target: true
     },
     {
       id: 'Guides',
@@ -50,7 +50,7 @@ const dashboard = {
       type: 'item',
       url: '/guide',
       icon: icons.IdcardOutlined, // Changed to IdcardOutlined
-      target: true
+      // target: true
     },
     {
       id: 'Packages',
@@ -58,7 +58,7 @@ const dashboard = {
       type: 'item',
       url: '/Packages',
       icon: icons.AppstoreAddOutlined, // Changed to AppstoreAddOutlined
-      target: true
+      // target: true
     },
     {
       id: 'Places',
@@ -66,7 +66,7 @@ const dashboard = {
       type: 'item',
       url: '/places',
       icon: icons.EnvironmentOutlined, // Changed to EnvironmentOutlined
-      target: true
+      // target: true
     },
     {
       id: 'Gallery',
@@ -74,7 +74,7 @@ const dashboard = {
       type: 'item',
       url: '/gallery',
       icon: icons.PictureOutlined, // Changed to PictureOutlined
-      target: true
+      // target: true
     },
     {
       id: 'Booking',
@@ -82,7 +82,7 @@ const dashboard = {
       type: 'item',
       url: '/booking',
       icon: icons.FileSearchOutlined, // Changed to FileSearchOutlined
-      target: true
+      // target: true
     },
     {
       id: 'payment',
@@ -90,7 +90,7 @@ const dashboard = {
       type: 'item',
       url: '/payment',
       icon: icons.PayCircleOutlined, // Changed to PayCircleOutlined
-      target: true
+      // target: true
     }
   ]
 };

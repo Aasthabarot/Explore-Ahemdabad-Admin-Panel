@@ -45,7 +45,7 @@ const columnChartOptions = {
   },
   yaxis: {
     title: {
-      text: '$ (thousands)'
+      text: ' (thousands)'
     }
   },
   fill: {
@@ -54,7 +54,7 @@ const columnChartOptions = {
   tooltip: {
     y: {
       formatter(val) {
-        return `$ ${val} thousands`;
+        return `{val} thousands`;
       }
     }
   },

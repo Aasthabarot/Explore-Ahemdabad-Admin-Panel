@@ -68,7 +68,7 @@ export default function DashboardDefault() {
         <AnalyticEcommerce title="Total Bookings" count="18,800" percentage={27.4} isLoss color="warning" extra="1,943" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Total Sales" count="$35,078" percentage={27.4} isLoss color="warning" extra="$20,395" />
+        <AnalyticEcommerce title="Total Profit" count="35,078" percentage={27.4} isLoss color="warning" extra="20,395" />
       </Grid>
 
       <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
@@ -90,7 +90,7 @@ export default function DashboardDefault() {
               <Typography variant="h6" color="text.secondary">
                 This Week Statistics
               </Typography>
-              <Typography variant="h3">$7,650</Typography>
+              <Typography variant="h3">7,650</Typography>
             </Stack>
           </Box>
           <MonthlyBarChart />
@@ -159,6 +159,24 @@ export default function DashboardDefault() {
               }
             }}
           >
+            {/* <ListItemButton divider>
+              <ListItemAvatar>
+                <Avatar sx={{ color: 'success.main', bgcolor: 'success.lighter' }}>
+                  <GiftOutlined />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={<Typography variant="subtitle1">Order #002434</Typography>} secondary="Today, 2:00 AM" />
+              <ListItemSecondaryAction>
+                <Stack alignItems="flex-end">
+                  <Typography variant="subtitle1" noWrap>
+                    + 1,430
+                  </Typography>
+                  <Typography variant="h6" color="secondary" noWrap>
+                    78%
+                  </Typography>
+                </Stack>
+              </ListItemSecondaryAction>
+            </ListItemButton> */}
             <ListItemButton divider>
               <ListItemAvatar>
                 <Avatar sx={{ color: 'success.main', bgcolor: 'success.lighter' }}>
@@ -169,7 +187,43 @@ export default function DashboardDefault() {
               <ListItemSecondaryAction>
                 <Stack alignItems="flex-end">
                   <Typography variant="subtitle1" noWrap>
-                    + $1,430
+                    + 1,430
+                  </Typography>
+                  <Typography variant="h6" color="secondary" noWrap>
+                    78%
+                  </Typography>
+                </Stack>
+              </ListItemSecondaryAction>
+            </ListItemButton>
+            <ListItemButton divider>
+              <ListItemAvatar>
+                <Avatar sx={{ color: 'success.main', bgcolor: 'success.lighter' }}>
+                  <GiftOutlined />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={<Typography variant="subtitle1">Order #002434</Typography>} secondary="Today, 2:00 AM" />
+              <ListItemSecondaryAction>
+                <Stack alignItems="flex-end">
+                  <Typography variant="subtitle1" noWrap>
+                    + 1,430
+                  </Typography>
+                  <Typography variant="h6" color="secondary" noWrap>
+                    78%
+                  </Typography>
+                </Stack>
+              </ListItemSecondaryAction>
+            </ListItemButton>
+            <ListItemButton divider>
+              <ListItemAvatar>
+                <Avatar sx={{ color: 'success.main', bgcolor: 'success.lighter' }}>
+                  <GiftOutlined />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={<Typography variant="subtitle1">Order #002434</Typography>} secondary="Today, 2:00 AM" />
+              <ListItemSecondaryAction>
+                <Stack alignItems="flex-end">
+                  <Typography variant="subtitle1" noWrap>
+                    + 1,430
                   </Typography>
                   <Typography variant="h6" color="secondary" noWrap>
                     78%
@@ -187,7 +241,7 @@ export default function DashboardDefault() {
               <ListItemSecondaryAction>
                 <Stack alignItems="flex-end">
                   <Typography variant="subtitle1" noWrap>
-                    + $302
+                    + 302
                   </Typography>
                   <Typography variant="h6" color="secondary" noWrap>
                     8%
@@ -205,7 +259,7 @@ export default function DashboardDefault() {
               <ListItemSecondaryAction>
                 <Stack alignItems="flex-end">
                   <Typography variant="subtitle1" noWrap>
-                    + $682
+                    + 682
                   </Typography>
                   <Typography variant="h6" color="secondary" noWrap>
                     16%
@@ -215,7 +269,7 @@ export default function DashboardDefault() {
             </ListItemButton>
           </List>
         </MainCard>
-        <MainCard sx={{ mt: 2 }}>
+        {/* <MainCard sx={{ mt: 2 }}>
           <Stack spacing={3}>
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
@@ -241,7 +295,7 @@ export default function DashboardDefault() {
               Need Help?
             </Button>
           </Stack>
-        </MainCard>
+        </MainCard> */}
       </Grid>
     </Grid>
   );
