@@ -1,60 +1,77 @@
 import * as React from 'react';
+import axios from 'axios';
 import { Button, Box, Card, CardMedia, CardContent, Typography, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
+
+const API_BASE_URL = "http://localhost:8000/api/v1/gallery";
 
 export default function ManageGallery() {
   const [images, setImages] = React.useState([]);
   const [openEditDialog, setOpenEditDialog] = React.useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = React.useState(null);
+  const [selectedImage, setSelectedImage] = React.useState(null);
   const [imagePreview, setImagePreview] = React.useState('');
-  const [editImage, setEditImage] = React.useState('');
   const [imageName, setImageName] = React.useState('');
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImages([...images, { id: Date.now(), name: file.name, img: reader.result }]);
-      };
-      reader.readAsDataURL(file);
+  // Fetch images from API
+  const fetchImages = async () => {
+    try {
+      const response = await axios.get(API_BASE_URL);
+      setImages(response.data);
+    } catch (error) {
+      console.error("Error fetching images:", error);
     }
   };
 
-  const handleEditImage = (index) => {
-    setSelectedImageIndex(index);
-    setEditImage(images[index].img);
-    setImageName(images[index].name);
-    setImagePreview(images[index].img);
+  React.useEffect(() => {
+    fetchImages();
+  }, []);
+
+  // Upload Image
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        await axios.post(`${API_BASE_URL}/upload`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        fetchImages(); // Refresh gallery after upload
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
+
+  // Open Edit Dialog
+  const handleEditImage = (image) => {
+    setSelectedImage(image);
+    setImageName(image.imageName);
+    setImagePreview(`${API_BASE_URL.replace("/api/v1/gallery", "")}${image.imageUrl}`);
     setOpenEditDialog(true);
   };
 
-  const handleDeleteImage = (index) => {
-    const updatedImages = images.filter((_, i) => i !== index);
-    setImages(updatedImages);
+  // Update Image Name
+  const handleSaveEdit = async () => {
+    if (!selectedImage) return;
+
+    try {
+      await axios.put(`${API_BASE_URL}/${selectedImage._id}`, { imageName });
+      fetchImages(); // Refresh gallery
+      setOpenEditDialog(false);
+    } catch (error) {
+      console.error("Error updating image:", error);
+    }
   };
 
-  const handleSaveEdit = () => {
-    const updatedImages = [...images];
-    updatedImages[selectedImageIndex] = {
-      ...updatedImages[selectedImageIndex],
-      name: imageName,
-      img: editImage,
-    };
-    setImages(updatedImages);
-    setOpenEditDialog(false);
-  };
-
-  // Handle image selection
-  const handleImageSelect = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result); // Preview the image
-        setEditImage(reader.result); // Set the image URL to the selected file's data URL
-      };
-      reader.readAsDataURL(file); // Convert the file to a base64 URL
+  // Delete Image
+  const handleDeleteImage = async (id) => {
+    try {
+      await axios.delete(`${API_BASE_URL}/${id}`);
+      fetchImages(); // Refresh gallery
+    } catch (error) {
+      console.error("Error deleting image:", error);
     }
   };
 
@@ -64,36 +81,27 @@ export default function ManageGallery() {
         Upload Image
         <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
       </Button>
-      
+
       {/* Gallery */}
       <Box display="flex" flexWrap="wrap" gap={3}>
-        {images.map((image, index) => (
-          <Card key={image.id} sx={{ maxWidth: 250, boxShadow: 3, position: 'relative' }}>
+        {images.map((image) => (
+          <Card key={image._id} sx={{ maxWidth: 250, boxShadow: 3, position: 'relative' }}>
             <CardMedia
               component="img"
               height="140"
-              image={image.img}
-              alt={image.name}
+              image={`${API_BASE_URL.replace("/api/v1/gallery", "")}${image.imageUrl}`}
+              alt={image.imageName}
             />
             <CardContent>
               <Typography variant="h6" noWrap>
-                {image.name}
+                {image.imageName}
               </Typography>
             </CardContent>
-            <Box
-              position="absolute"
-              top={5}
-              right={5}
-              display="flex"
-              justifyContent="space-between"
-              flexDirection="column"
-            >
-              {/* Edit Button */}
-              <IconButton color="primary" onClick={() => handleEditImage(index)}>
+            <Box position="absolute" top={5} right={5} display="flex" flexDirection="column">
+              <IconButton color="primary" onClick={() => handleEditImage(image)}>
                 <EditIcon />
               </IconButton>
-              {/* Delete Button */}
-              <IconButton color="error" onClick={() => handleDeleteImage(index)}>
+              <IconButton color="error" onClick={() => handleDeleteImage(image._id)}>
                 <DeleteIcon />
               </IconButton>
             </Box>
@@ -112,17 +120,6 @@ export default function ManageGallery() {
             onChange={(e) => setImageName(e.target.value)}
             margin="normal"
           />
-          {/* Image File Input */}
-          <Button variant="contained" component="label" sx={{ marginTop: 2 }}>
-            Select New Image
-            <input
-              type="file"
-              hidden
-              accept="image/*"
-              onChange={handleImageSelect}
-            />
-          </Button>
-          
           {/* Image Preview */}
           {imagePreview && (
             <Box mt={2} display="flex" justifyContent="center">

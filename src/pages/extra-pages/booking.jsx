@@ -5,11 +5,11 @@ import PopupState, { bindToggle, bindPopper } from 'material-ui-popup-state';
 
 // Sample data for bookings
 const bookingData = [
-  { id: 101, packageName: 'Heritage Walk', citizenType: 'Indian', members: 4, paymentStatus: 'Completed', amountPaid: 800 },
-  { id: 102, packageName: 'Cultural Walk', citizenType: 'Foreign', members: 2, paymentStatus: 'Completed', amountPaid: 600 },
-  { id: 103, packageName: 'City Tour', citizenType: 'Indian', members: 5, paymentStatus: 'Pending', amountPaid: 1000 },
-  { id: 104, packageName: 'Heritage Walk', citizenType: 'Foreign', members: 3, paymentStatus: 'Failed', amountPaid: 900 },
-  { id: 105, packageName: 'Cultural Walk', citizenType: 'Indian', members: 6, paymentStatus: 'Completed', amountPaid: 1200 },
+  { id: 101, packageName: 'Heritage Walk', citizenType: 'Indian', members: 4, amountPaid: 800 },
+  { id: 102, packageName: 'Cultural Walk', citizenType: 'Foreign', members: 2, amountPaid: 600 },
+  { id: 103, packageName: 'City Tour', citizenType: 'Indian', members: 5,amountPaid: 1000 },
+  { id: 104, packageName: 'Heritage Walk', citizenType: 'Foreign', members: 3, amountPaid: 900 },
+  { id: 105, packageName: 'Cultural Walk', citizenType: 'Indian', members: 6, amountPaid: 1200 },
 ];
 
 export default function BookingPage() {
@@ -19,7 +19,7 @@ export default function BookingPage() {
   const [editPackageName, setEditPackageName] = React.useState('');
   const [editCitizenType, setEditCitizenType] = React.useState('');
   const [editMembers, setEditMembers] = React.useState('');
-  const [editPaymentStatus, setEditPaymentStatus] = React.useState('');
+  // const [editPaymentStatus, setEditPaymentStatus] = React.useState('');
   const [editAmountPaid, setEditAmountPaid] = React.useState('');
 
   const handleDelete = (id) => {
@@ -31,7 +31,7 @@ export default function BookingPage() {
     setEditPackageName(booking.packageName);
     setEditCitizenType(booking.citizenType);
     setEditMembers(booking.members);
-    setEditPaymentStatus(booking.paymentStatus);
+    // setEditPaymentStatus(booking.paymentStatus);
     setEditAmountPaid(booking.amountPaid);
     setOpenEditDialog(true);
   };
@@ -39,7 +39,7 @@ export default function BookingPage() {
   const handleSaveEdit = () => {
     const updatedBookings = bookingList.map(booking =>
       booking.id === selectedBooking.id
-        ? { ...booking, packageName: editPackageName, citizenType: editCitizenType, members: editMembers, paymentStatus: editPaymentStatus, amountPaid: editAmountPaid }
+        ? { ...booking, packageName: editPackageName, citizenType: editCitizenType, members: editMembers,amountPaid: editAmountPaid }
         : booking
     );
     setBookingList(updatedBookings);
@@ -56,7 +56,7 @@ export default function BookingPage() {
               <TableCell>Package Name</TableCell>
               <TableCell>Citizen Type</TableCell>
               <TableCell>No. of Members</TableCell>
-              <TableCell>Payment Status</TableCell>
+              {/* <TableCell>Payment Status</TableCell> */}
               <TableCell>Amount Paid</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
@@ -67,7 +67,7 @@ export default function BookingPage() {
                 <TableCell>{booking.packageName}</TableCell>
                 <TableCell>{booking.citizenType}</TableCell>
                 <TableCell>{booking.members}</TableCell>
-                <TableCell>{booking.paymentStatus}</TableCell>
+                {/* <TableCell>{booking.paymentStatus}</TableCell> */}
                 <TableCell>₹{booking.amountPaid}</TableCell>
                 <TableCell>
                   {/* <Button
@@ -151,13 +151,13 @@ export default function BookingPage() {
             onChange={(e) => setEditMembers(e.target.value)}
             margin="normal"
           />
-          <TextField
+          {/* <TextField
             fullWidth
             label="Payment Status"
             value={editPaymentStatus}
             onChange={(e) => setEditPaymentStatus(e.target.value)}
             margin="normal"
-          />
+          /> */}
           <TextField
             fullWidth
             label="Amount Paid"

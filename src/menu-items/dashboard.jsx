@@ -84,14 +84,14 @@ const dashboard = {
       icon: icons.FileSearchOutlined, // Changed to FileSearchOutlined
       // target: true
     },
-    {
-      id: 'payment',
-      title: 'Payment',
-      type: 'item',
-      url: '/payment',
-      icon: icons.PayCircleOutlined, // Changed to PayCircleOutlined
-      // target: true
-    }
+    // {
+    //   id: 'payment',
+    //   title: 'Payment',
+    //   type: 'item',
+    //   url: '/payment',
+    //   icon: icons.PayCircleOutlined, // Changed to PayCircleOutlined
+    //   // target: true
+    // }
   ]
 };
 

@@ -1,172 +1,173 @@
-import * as React from 'react';
-import { Button, Card, CardContent, CardMedia, Typography, Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Popper, Fade, Paper } from '@mui/material';
-import PopupState, { bindToggle, bindPopper } from 'material-ui-popup-state';
+import React, { useState, useEffect } from 'react';
+import {
+  Button, Card, CardContent, CardMedia, Typography, Box,
+  Dialog, DialogActions, DialogContent, DialogTitle, TextField
+} from '@mui/material';
+import axios from 'axios';
 
-// Sample data for places
-const placesData = [
-  { id: 1, title: 'Sabarmati Riverfront', img: 'url-to-image-1', desc: 'A beautiful riverfront along the Sabarmati River, perfect for walks and outdoor activities.' },
-  { id: 2, title: 'Kankaria Lake', img: 'url-to-image-2', desc: 'A popular recreational area with a lake, zoo, and boat rides.' },
-  { id: 3, title: 'Sidi Saiyyed Mosque', img: 'url-to-image-3', desc: 'Famous for its intricate architecture and historical significance.' },
-];
+const API_BASE_URL = 'http://localhost:8000/api/v1/places';
 
 export default function PlacesAdmin() {
-  const [placesList, setPlaces] = React.useState(placesData);
-  const [openEditDialog, setOpenEditDialog] = React.useState(false);
-  const [selectedPlace, setSelectedPlace] = React.useState(null);
-  const [editTitle, setEditTitle] = React.useState('');
-  const [editDesc, setEditDesc] = React.useState('');
-  const [editImg, setEditImg] = React.useState('');
-  const [imagePreview, setImagePreview] = React.useState('');
+  const [places, setPlaces] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentPlace, setCurrentPlace] = useState({ name: '', description: '', image: '' });
+  const [imageFile, setImageFile] = useState(null);
 
-  const handleDelete = (id) => {
-    setPlaces(prev => prev.filter(item => item.id !== id));
+  useEffect(() => {
+    fetchPlaces();
+  }, []);
+
+  const fetchPlaces = async () => {
+    try {
+      const response = await axios.get(API_BASE_URL);
+      setPlaces(response.data);
+    } catch (error) {
+      console.error('Error fetching places:', error);
+    }
   };
 
-  const handleEdit = (place) => {
-    setSelectedPlace(place);
-    setEditTitle(place.title);
-    setEditDesc(place.desc);
-    setEditImg(place.img);
-    setImagePreview(place.img); // Set image preview to current place image
-    setOpenEditDialog(true);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCurrentPlace({ ...currentPlace, [name]: value });
   };
 
-  const handleSaveEdit = () => {
-    const updatedPlaces = placesList.map(place =>
-      place.id === selectedPlace.id
-        ? { ...place, title: editTitle, desc: editDesc, img: editImg }
-        : place
-    );
-    setPlaces(updatedPlaces);
-    setOpenEditDialog(false);
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
   };
 
-  // Handle image selection
-  const handleImageSelect = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result); // Preview the image
-        setEditImg(reader.result); // Set the image URL to the selected file's data URL
-      };
-      reader.readAsDataURL(file); // Convert the file to a base64 URL
+  const handleAddPlace = () => {
+    setCurrentPlace({ name: '', description: '', image: '' });
+    setImageFile(null);
+    setIsEditing(false);
+    setOpenDialog(true);
+  };
+
+  const handleEditPlace = (place) => {
+    setCurrentPlace(place);
+    setImageFile(null);
+    setIsEditing(true);
+    setOpenDialog(true);
+  };
+
+  const handleDeletePlace = async (id) => {
+    try {
+      await axios.delete(`${API_BASE_URL}/${id}`);
+      fetchPlaces();
+    } catch (error) {
+      console.error('Error deleting place:', error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('name', currentPlace.name);
+    formData.append('description', currentPlace.description);
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+
+    try {
+      if (isEditing) {
+        await axios.put(`${API_BASE_URL}/${currentPlace._id}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      } else {
+        await axios.post(API_BASE_URL, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      }
+      fetchPlaces();
+      setOpenDialog(false);
+    } catch (error) {
+      console.error('Error saving place:', error);
     }
   };
 
   return (
-    <Box display="flex" flexWrap="wrap" gap={3} p={3}>
-      {placesList.map((place) => (
-        <Card key={place.id} sx={{ maxWidth: 345, boxShadow: 3 }}>
-          <CardMedia
-            component="img"
-            height="140"
-            image={place.img}
-            alt={place.title}
-          />
-          <CardContent>
-            <Typography variant="h6">{place.title}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {place.desc}
-            </Typography>
-          </CardContent>
-          <Box display="flex" justifyContent="space-between" p={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleEdit(place)} // Open edit dialog
-            >
-              Edit
-            </Button>
-            <PopupState variant="popper" popupId={`delete-popup-${place.id}`}>
-              {(popupState) => (
-                <div>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    {...bindToggle(popupState)}
-                    sx={{ color: 'white' }}
-                  >
-                    Delete
-                  </Button>
-                  <Popper {...bindPopper(popupState)} transition>
-                    {({ TransitionProps }) => (
-                      <Fade {...TransitionProps} timeout={350}>
-                        <Paper sx={{ padding: 2 }}>
-                          <Typography>Are you sure you want to delete this place?</Typography>
-                          <div style={{ marginTop: 10 }}>
-                            <Button
-                              variant="contained"
-                              color="error"
-                              onClick={() => handleDelete(place.id)}
-                            >
-                              Yes
-                            </Button>
-                            <Button
-                              variant="outlined"
-                              onClick={popupState.close}
-                              sx={{ marginLeft: 2 }}
-                            >
-                              No
-                            </Button>
-                          </div>
-                        </Paper>
-                      </Fade>
-                    )}
-                  </Popper>
-                </div>
-              )}
-            </PopupState>
-          </Box>
-        </Card>
-      ))}
-      
-      {/* Edit Dialog */}
-      <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)}>
-        <DialogTitle>Edit Place</DialogTitle>
+    <Box p={3}>
+      <Button variant="contained" color="primary" onClick={handleAddPlace}>
+        Add Place
+      </Button>
+      <Box display="flex" flexWrap="wrap" gap={3} mt={3}>
+        {places.map((place) => (
+          <Card key={place._id} sx={{ maxWidth: 345 }}>
+            <CardMedia
+              component="img"
+              height="140"
+              image={`http://localhost:8000${place.image}`}
+              alt={place.name}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {place.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {place.description}
+              </Typography>
+            </CardContent>
+            <Box display="flex" justifyContent="space-between" p={2}>
+              <Button variant="outlined" onClick={() => handleEditPlace(place)}>
+                Edit
+              </Button>
+              <Button variant="outlined" color="error" onClick={() => handleDeletePlace(place._id)}>
+                Delete
+              </Button>
+            </Box>
+          </Card>
+        ))}
+      </Box>
+
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>{isEditing ? 'Edit Place' : 'Add Place'}</DialogTitle>
         <DialogContent>
           <TextField
+            autoFocus
+            margin="dense"
+            name="name"
+            label="Name"
+            type="text"
             fullWidth
-            label="Title"
-            value={editTitle}
-            onChange={(e) => setEditTitle(e.target.value)}
-            margin="normal"
+            value={currentPlace.name}
+            onChange={handleInputChange}
           />
           <TextField
-            fullWidth
+            margin="dense"
+            name="description"
             label="Description"
-            value={editDesc}
-            onChange={(e) => setEditDesc(e.target.value)}
-            margin="normal"
+            type="text"
+            fullWidth
             multiline
             rows={4}
+            value={currentPlace.description}
+            onChange={handleInputChange}
           />
-          
-          {/* Image File Input */}
-          <Button variant="contained" component="label" sx={{ marginTop: 2 }}>
-            Select Image
-            <input
-              type="file"
-              hidden
-              accept="image/*"
-              onChange={handleImageSelect}
-            />
+          <Button variant="contained" component="label" sx={{ mt: 2 }}>
+            Upload Image
+            <input type="file" hidden onChange={handleImageChange} />
           </Button>
-          
-          {/* Image Preview */}
-          {imagePreview && (
-            <Box mt={2} display="flex" justifyContent="center">
-              <img src={imagePreview} alt="Preview" style={{ maxHeight: 200, maxWidth: 200, objectFit: 'cover' }} />
+          {currentPlace.image && !imageFile && (
+            <Box mt={2}>
+              <img
+                src={`http://localhost:8000${currentPlace.image}`}
+                alt={currentPlace.name}
+                style={{ width: '100%', maxHeight: 200, objectFit: 'cover' }}
+              />
+            </Box>
+          )}
+          {imageFile && (
+            <Box mt={2}>
+              <img
+                src={URL.createObjectURL(imageFile)}
+                alt="Preview"
+                style={{ width: '100%', maxHeight: 200, objectFit: 'cover' }}
+              />
             </Box>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditDialog(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleSaveEdit} color="primary">
-            Save
-          </Button>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={handleSubmit}>{isEditing ? 'Save' : 'Add'}</Button>
         </DialogActions>
       </Dialog>
     </Box>

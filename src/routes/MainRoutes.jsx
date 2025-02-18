@@ -72,10 +72,10 @@ const MainRoutes = {
       path: 'places',
       element: <PlacesAdmin />
     },
-    {
-      path: 'payment',
-      element: <PaymentHistory />
-    },
+    // {
+    //   path: 'payment',
+    //   element: <PaymentHistory />
+    // },
     
     {
       path: 'shadow',
