@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
   Button, Card, CardContent, CardMedia, Typography, Box,
-  Dialog, DialogActions, DialogContent, DialogTitle, TextField
+  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
 } from '@mui/material';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_BASE_URL = 'http://localhost:8000/api/v1/places';
 
@@ -13,6 +15,7 @@ export default function PlacesAdmin() {
   const [isEditing, setIsEditing] = useState(false);
   const [currentPlace, setCurrentPlace] = useState({ name: '', description: '', image: '' });
   const [imageFile, setImageFile] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   useEffect(() => {
     fetchPlaces();
@@ -50,10 +53,18 @@ export default function PlacesAdmin() {
     setOpenDialog(true);
   };
 
-  const handleDeletePlace = async (id) => {
+  const handleDeletePlace = (id) => {
+    setConfirmDelete(id);
+  };
+
+  const confirmDeletePlace = async () => {
     try {
-      await axios.delete(`${API_BASE_URL}/${id}`);
+      await axios.delete(`${API_BASE_URL}/${confirmDelete}`);
       fetchPlaces();
+      toast.success('Place deleted successfully!', {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setConfirmDelete(null);
     } catch (error) {
       console.error('Error deleting place:', error);
     }
@@ -86,6 +97,7 @@ export default function PlacesAdmin() {
 
   return (
     <Box p={3}>
+      <ToastContainer />
       <Button variant="contained" color="primary" onClick={handleAddPlace}>
         Add Place
       </Button>
@@ -168,6 +180,19 @@ export default function PlacesAdmin() {
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
           <Button onClick={handleSubmit}>{isEditing ? 'Save' : 'Add'}</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={confirmDelete !== null} onClose={() => setConfirmDelete(null)}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this place?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDelete(null)}>Cancel</Button>
+          <Button onClick={confirmDeletePlace} color="error">Delete</Button>
         </DialogActions>
       </Dialog>
     </Box>

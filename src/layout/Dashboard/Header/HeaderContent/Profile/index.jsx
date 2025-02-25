@@ -91,8 +91,7 @@ export default function Profile() {
         <Stack direction="row" spacing={1.25} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar alt="profile user" src={avatar1} size="sm" />
           <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
-            John Doe
-          </Typography>
+Admin          </Typography>
         </Stack>
       </ButtonBase>
       <Popper
@@ -113,7 +112,7 @@ export default function Profile() {
           ]
         }}
       >
-        {({ TransitionProps }) => (
+        {/* {({ TransitionProps }) => (
           <Transitions type="grow" position="top-right" in={open} {...TransitionProps}>
             <Paper sx={{ boxShadow: theme.customShadows.z1, width: 290, minWidth: 240, maxWidth: { xs: 250, md: 290 } }}>
               <ClickAwayListener onClickAway={handleClose}>
@@ -179,7 +178,7 @@ export default function Profile() {
               </ClickAwayListener>
             </Paper>
           </Transitions>
-        )}
+        )} */}
       </Popper>
     </Box>
   );

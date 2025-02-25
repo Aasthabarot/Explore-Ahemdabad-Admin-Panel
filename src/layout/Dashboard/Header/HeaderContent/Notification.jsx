@@ -71,7 +71,7 @@ export default function Notification() {
 
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-      <IconButton
+      {/* <IconButton
         color="secondary"
         variant="light"
         sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : 'transparent' }}
@@ -81,10 +81,10 @@ export default function Notification() {
         aria-haspopup="true"
         onClick={handleToggle}
       >
-        <Badge badgeContent={read} color="primary">
+        {/* <Badge badgeContent={read} color="primary">
           <BellOutlined />
-        </Badge>
-      </IconButton>
+        </Badge> 
+      </IconButton> */}
       <Popper
         placement={matchesXs ? 'bottom' : 'bottom-end'}
         open={open}

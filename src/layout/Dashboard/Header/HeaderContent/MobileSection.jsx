@@ -53,7 +53,7 @@ export default function MobileSection() {
   return (
     <>
       <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-        <IconButton
+        {/* <IconButton
           sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor }}
           aria-label="open more menu"
           ref={anchorRef}
@@ -64,7 +64,7 @@ export default function MobileSection() {
           variant="light"
         >
           <MoreOutlined />
-        </IconButton>
+        </IconButton> */}
       </Box>
       <Popper
         placement="bottom-end"

@@ -29,7 +29,7 @@ const MainRoutes = {
   children: [
     {
       path: '/',
-      element: <DashboardDefault />
+      element: <TravellerDetails />
     },
     {
       path: 'color',

@@ -28,14 +28,14 @@ const dashboard = {
   id: 'group-dashboard',
   type: 'group',
   children: [
-    {
-      id: 'dashboard',
-      title: 'Dashboard',
-      type: 'item',
-      url: '/dashboard/default',
-      icon: icons.DashboardOutlined,
-      breadcrumbs: false
-    },
+    // {
+    //   id: 'dashboard',
+    //   title: 'Dashboard',
+    //   type: 'item',
+    //   url: '/dashboard/default',
+    //   icon: icons.DashboardOutlined,
+    //   breadcrumbs: false
+    // },
     {
       id: 'Travellers',
       title: 'Travellers',
@@ -44,14 +44,14 @@ const dashboard = {
       icon: icons.UserOutlined, // Changed to UserOutlined
       // target: true
     },
-    {
-      id: 'Guides',
-      title: 'Guides',
-      type: 'item',
-      url: '/guide',
-      icon: icons.IdcardOutlined, // Changed to IdcardOutlined
-      // target: true
-    },
+    // {
+    //   id: 'Guides',
+    //   title: 'Guides',
+    //   type: 'item',
+    //   url: '/guide',
+    //   icon: icons.IdcardOutlined, // Changed to IdcardOutlined
+    //   // target: true
+    // },
     {
       id: 'Packages',
       title: 'Packages',
