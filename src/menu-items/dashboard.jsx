@@ -7,7 +7,8 @@ import {
   EnvironmentOutlined, 
   PictureOutlined, 
   FileSearchOutlined, 
-  PayCircleOutlined 
+  PayCircleOutlined,
+  StarOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -19,7 +20,8 @@ const icons = {
   EnvironmentOutlined, // For Places
   PictureOutlined, // For Gallery
   FileSearchOutlined, // For Booking
-  PayCircleOutlined // For Payment
+  PayCircleOutlined, // For Payment
+  StarOutlined,
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -84,6 +86,15 @@ const dashboard = {
       icon: icons.FileSearchOutlined, // Changed to FileSearchOutlined
       // target: true
     },
+    {
+      id: 'Review',
+      title: 'Review',
+      type: 'item',
+      url: '/review',
+      icon: icons.StarOutlined, // Changed to StarOutlined for better representation
+      // target: true
+    }
+    
     // {
     //   id: 'payment',
     //   title: 'Payment',

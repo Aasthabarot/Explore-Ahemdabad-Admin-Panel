@@ -10,6 +10,7 @@ import PlacesAdmin from 'pages/extra-pages/places';
 import ManageGallery from 'pages/extra-pages/gallery';
 import BookingPage from 'pages/extra-pages/booking';
 import PaymentHistory from 'pages/extra-pages/payment';
+import AdminReviews from 'pages/extra-pages/review';
 
 const Color = Loadable(lazy(() => import('pages/component-overview/color')));
 const Typography = Loadable(lazy(() => import('pages/component-overview/typography')));
@@ -71,6 +72,10 @@ const MainRoutes = {
     {
       path: 'places',
       element: <PlacesAdmin />
+    },
+    {
+      path: 'review',
+      element: <AdminReviews />
     },
     // {
     //   path: 'payment',
